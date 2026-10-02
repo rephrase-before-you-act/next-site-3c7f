@@ -101,7 +101,7 @@
   <div><img src="assets/pi0_conditions.png" alt="pi0 success by instruction group">
        <p class="cap">&pi;<sub>0</sub> on 12 held-out Bridge tasks, 24 scenes each. The wide bar pools all 12 tasks; the thin bars split them into tasks whose object names appear in the training instructions (left, 5 tasks, &ldquo;in-distribution&rdquo;) and tasks whose names do not (right, 7, &ldquo;out-of-distribution&rdquo;). With the canonical wording the two groups are 21 points apart; with the oracle wording, 3 points. Much of what looks like a generalization gap is a wording gap.</p></div>
   <div><img src="assets/pi05_fourtier.png" alt="pi0.5 success by instruction group">
-       <p class="cap">&pi;<sub>0.5</sub> on 28 LIBERO tasks, 50 scenes each. Thin bars: tasks the model was trained on (left, 10) and tasks it was not (right, 18). On trained tasks, adversarial wording drops success from 97% to 47%. On the other tasks the wording barely matters (52, 50, and 48%), yet the oracle still finds headroom in both (99% and 66%).</p></div>
+       <p class="cap">&pi;<sub>0.5</sub> on 28 LIBERO tasks, 50 scenes each. Thin bars: tasks the model was trained on (left, 10) and tasks it was not (right, 18). On trained tasks, adversarial wording drops success from 97% to 47%. On tasks that are not in the training set, the wording barely matters (52, 50, and 48%), yet the oracle still finds headroom in both (99% and 66%).</p></div>
 </div>
 
 <h2>Mitigating language sensitivity</h2>
