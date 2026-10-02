@@ -37,6 +37,15 @@
   .survey-demo label { display: block; font-weight: 600; margin: 0 0 .4rem; }
   .survey-demo textarea { width: 100%; box-sizing: border-box; border: 1px solid #e5e7eb; border-radius: 6px; padding: .6rem .7rem;
                           font: inherit; min-height: 4.5rem; resize: vertical; background: #fff; }
+  .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; margin: 1rem 0 1.6rem; }
+  .rule { position: relative; background: #f6f4ee; border: 1px solid #e2ddd0; border-left: 4px solid #3F6B52; border-radius: 8px;
+          padding: 1.3rem 1.2rem 1.1rem 1.4rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+  .rule::before { content: "\201C"; position: absolute; top: -.2rem; left: .55rem; font-size: 3.6rem; line-height: 1;
+                  color: #3F6B52; opacity: .22; font-family: Georgia, serif; }
+  .rule .src { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72rem; color: #6b7280;
+               letter-spacing: .02em; margin: 0 0 .55rem; display: flex; align-items: center; gap: .45rem; }
+  .rule .src::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #3F6B52; display: inline-block; }
+  .rule p { margin: 0; font-style: italic; font-size: 1.02rem; line-height: 1.5; }
   .bib { position: relative; background: #f6f4ee; border: 1px solid #e2ddd0; border-radius: 6px; padding: .9rem 1.1rem; overflow-x: auto; }
   .bib pre { margin: 0; font-size: .85rem; line-height: 1.45; }
   .bib button { position: absolute; top: .6rem; right: .6rem; font: inherit; font-size: .8rem; padding: .2rem .6rem;
@@ -113,12 +122,19 @@
 <p>Our key observation is that the sensitivity is systematic rather than random. The same kinds of wording help or hurt across many tasks, so the pattern can be written down as rules. The method has three steps:</p>
 <ol>
   <li><strong>Gather evidence.</strong> Take a handful of training tasks. A vision-language model writes many rephrasings of each, the robot tries every one, and we record how often each wording works.</li>
-  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, for example &ldquo;&lsquo;coke&rsquo; stays &lsquo;coke&rsquo;, never &lsquo;cola&rsquo;, &lsquo;soda&rsquo;, or bare &lsquo;can&rsquo;&rdquo; and &ldquo;never swap a common noun for its sibling: keep &lsquo;plate&rsquo;, not &lsquo;dish&rsquo;&rdquo;. This happens once, ahead of time.</li>
+  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, like the four quoted below. This happens once, ahead of time.</li>
   <li><strong>Apply the rules.</strong> When a new instruction arrives, a vision-language model, the <em>applier</em>, rewrites it once following the rules, and the rewrite goes to the robot.</li>
 </ol>
 <p>The robot&rsquo;s model is never changed, nothing runs while the robot moves, and because the rules describe how the robot reads language in general, they carry over to tasks it has never seen.</p>
 <img src="assets/method.png" alt="method overview">
 <p class="cap">The three steps. The instructions, scores, and rules shown in this figure are illustrative, not from our experiments.</p>
+<p>A few of the distilled rules:</p>
+<div class="rules-grid">
+  <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;Name every object by the shortest common word an ordinary person would use: the everyday name, never a description, riddle, or category phrase.&rdquo;</p></div>
+  <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;&lsquo;onto&rsquo; becomes &lsquo;on&rsquo;, &lsquo;into&rsquo; becomes &lsquo;in&rsquo;.&rdquo;</p></div>
+  <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;Never replace a specific name with a broader class or packaging word (&lsquo;ketchup&rsquo; must not become &lsquo;sauce&rsquo; or &lsquo;bottle&rsquo;).&rdquo;</p></div>
+  <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;Replace &lsquo;hot plate&rsquo;, &lsquo;hotplate&rsquo;, &lsquo;burner&rsquo;, &lsquo;cooktop&rsquo; by &lsquo;stove&rsquo;, whatever name the scene description uses for the appliance.&rdquo;</p></div>
+</div>
 
 <h4>Human-written instructions</h4>
 <p>To test on instructions that real people would actually write, we ran a survey. Each respondent watched a short looping video of the robot doing a task and typed how they would ask for it, once as if asking an 8-year-old, once an adult, and once a robot. They never saw the original instruction. 37 people aged 11 to 85 took part, with familiarity with AI ranging from none to professional. After dropping a few blank or incomplete entries and duplicates, this gave 363 unique instructions, kept exactly as typed, typos included. Below is one task as respondents saw it.</p>
