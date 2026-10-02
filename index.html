@@ -123,7 +123,7 @@
 <p>Our key observation is that the sensitivity is systematic rather than random. The same kinds of wording help or hurt across many tasks, so the pattern can be written down as rules. The method has three steps:</p>
 <ol>
   <li><strong>Gather evidence.</strong> Take a handful of training tasks. A vision-language model writes many rephrasings of each, the robot tries every one, and we record how often each wording works.</li>
-  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, like the five quoted below. This happens once, ahead of time.</li>
+  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, like those quoted below. This happens once, ahead of time.</li>
   <li><strong>Apply the rules.</strong> When a new instruction arrives, a vision-language model, the <em>applier</em>, rewrites it once following the rules, and the rewrite goes to the robot.</li>
 </ol>
 <p>The robot&rsquo;s model is never changed, nothing runs while the robot moves, and because the rules describe how the robot reads language in general, they carry over to tasks it has never seen.</p>
@@ -135,6 +135,8 @@
   <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;&lsquo;onto&rsquo; becomes &lsquo;on&rsquo;, &lsquo;into&rsquo; becomes &lsquo;in&rsquo;.&rdquo;</p></div>
   <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;Never replace a specific name with a broader class or packaging word (&lsquo;ketchup&rsquo; must not become &lsquo;sauce&rsquo; or &lsquo;bottle&rsquo;).&rdquo;</p></div>
   <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;Write a bare lowercase imperative: strip &lsquo;can you&rsquo;, &lsquo;could you&rsquo;, &lsquo;would you&rsquo;, &lsquo;please&rsquo;, &lsquo;just&rsquo; and &lsquo;go ahead and&rsquo;.&rdquo;</p></div>
+  <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;Name the outcome, never the mechanism: no knob, handle, button or switch.&rdquo;</p></div>
+  <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;The landmark is what tells the robot which of several similar objects to pick. Never drop it, generalise it, or replace it.&rdquo;</p></div>
   <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;When it is not clear which object a word refers to, keep the word as it came: the robot tolerates most paraphrase, but a wrong referent costs the whole task.&rdquo;</p></div>
 </div>
 
