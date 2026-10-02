@@ -88,7 +88,7 @@
 </div>
 
 <h3>Oracles</h3>
-<p>The second measurement: for each task we search for the best wording we can find, which we call the task&rsquo;s <em>oracle</em>, and compare it with the other ways the task can be worded. The search is simple. A vision-language model proposes 16 rephrasings, the robot tries each one many times, and the next round of proposals sees the scores so far; after three rounds we keep the best. The oracle is then re-measured on fresh attempts so that luck in the search does not inflate it.</p>
+<p>The second measurement: for each task we search for the best wording we can find, which we call the task&rsquo;s <em>oracle instruction</em>, and compare it with the other ways the task can be worded. The search is simple. A vision-language model proposes 16 rephrasings, the robot tries each one many times, and the next round of proposals sees the scores so far; after three rounds we keep the best. The oracle is then re-measured on fresh attempts so that luck in the search does not inflate it.</p>
 <p id="groups">The instruction groups we compare, which come up again in the results:</p>
 <ul>
   <li><strong>Canonical</strong> (or original): the instruction that comes with the task. For tasks in the training data, this is the wording the robot was trained on.</li>
@@ -96,6 +96,7 @@
   <li><strong>Adversarial</strong>: deliberately convoluted, over-complicated wordings, written by a vision-language model.</li>
   <li><strong>Oracle</strong>: the best wording found by the search above.</li>
 </ul>
+<p>This gives another measure of language sensitivity: how much higher the success rate is with the oracle instruction than with the other groups of instructions, such as the natural or adversarial ones.</p>
 <div class="row">
   <div><img src="assets/pi0_conditions.png" alt="pi0 success by instruction group">
        <p class="cap">&pi;<sub>0</sub> on 12 held-out Bridge tasks, 24 scenes each. The wide bar pools all 12 tasks; the thin bars split them into tasks whose object names appear in the training instructions (left, 5 tasks, &ldquo;in-distribution&rdquo;) and tasks whose names do not (right, 7, &ldquo;out-of-distribution&rdquo;). With the canonical wording the two groups are 21 points apart; with the oracle wording, 3 points. Much of what looks like a generalization gap is a wording gap.</p></div>
