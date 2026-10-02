@@ -46,6 +46,7 @@
                letter-spacing: .02em; margin: 0 0 .55rem; display: flex; align-items: center; gap: .45rem; }
   .rule .src::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #3F6B52; display: inline-block; }
   .rule p { margin: 0; font-style: italic; font-size: 1.02rem; line-height: 1.5; }
+  .rules-grid .rule:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .bib { position: relative; background: #f6f4ee; border: 1px solid #e2ddd0; border-radius: 6px; padding: .9rem 1.1rem; overflow-x: auto; }
   .bib pre { margin: 0; font-size: .85rem; line-height: 1.45; }
   .bib button { position: absolute; top: .6rem; right: .6rem; font: inherit; font-size: .8rem; padding: .2rem .6rem;
@@ -122,7 +123,7 @@
 <p>Our key observation is that the sensitivity is systematic rather than random. The same kinds of wording help or hurt across many tasks, so the pattern can be written down as rules. The method has three steps:</p>
 <ol>
   <li><strong>Gather evidence.</strong> Take a handful of training tasks. A vision-language model writes many rephrasings of each, the robot tries every one, and we record how often each wording works.</li>
-  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, like the four quoted below. This happens once, ahead of time.</li>
+  <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, like the five quoted below. This happens once, ahead of time.</li>
   <li><strong>Apply the rules.</strong> When a new instruction arrives, a vision-language model, the <em>applier</em>, rewrites it once following the rules, and the rewrite goes to the robot.</li>
 </ol>
 <p>The robot&rsquo;s model is never changed, nothing runs while the robot moves, and because the rules describe how the robot reads language in general, they carry over to tasks it has never seen.</p>
@@ -134,6 +135,7 @@
   <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;&lsquo;onto&rsquo; becomes &lsquo;on&rsquo;, &lsquo;into&rsquo; becomes &lsquo;in&rsquo;.&rdquo;</p></div>
   <div class="rule"><p class="src">Bridge rulebook</p><p>&ldquo;Never replace a specific name with a broader class or packaging word (&lsquo;ketchup&rsquo; must not become &lsquo;sauce&rsquo; or &lsquo;bottle&rsquo;).&rdquo;</p></div>
   <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;Replace &lsquo;hot plate&rsquo;, &lsquo;hotplate&rsquo;, &lsquo;burner&rsquo;, &lsquo;cooktop&rsquo; by &lsquo;stove&rsquo;, whatever name the scene description uses for the appliance.&rdquo;</p></div>
+  <div class="rule"><p class="src">LIBERO rulebook</p><p>&ldquo;When the scene does not settle which object a word refers to, keep the word as it came: the robot tolerates most paraphrase, but a wrong referent costs the whole task.&rdquo;</p></div>
 </div>
 
 <h4>Human-written instructions</h4>
