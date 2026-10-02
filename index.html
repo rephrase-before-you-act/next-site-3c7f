@@ -156,7 +156,7 @@
   <li>VLAs are very sensitive to wording, and the sensitivity is systematic. On &pi;<sub>0</sub> the best wording nearly closes the 21-point gap between in-distribution and out-of-distribution tasks, so much of the apparent generalization gap is a wording gap.</li>
   <li>It can be reduced without touching the robot&rsquo;s model. Evidence from a few training tasks, distilled by a language model into 10 to 20 explicit rules, improves a frozen &pi;<sub>0</sub> by 16 to 27% relative on held-out tasks, with the gains concentrated out-of-distribution.</li>
   <li>The method is cheap and general: one rewrite per instruction, no retraining, no checking during the motion, transfer to unseen tasks, and a replication on &pi;<sub>0.5</sub> and LIBERO.</li>
-  <li>The sensitivity looks like a product of finetuning. On LIBERO, swings were far easier to find on tasks &pi;<sub>0.5</sub> was finetuned on: 44% of the candidate pairs we tested there showed a significant swing, against 5% on the other tasks. Our hypothesis is that finetuning makes the model latch onto the exact wordings it was trained on, so one changed word can break the match.</li>
+  <li>The sensitivity looks like a product of finetuning. On LIBERO, swings were far easier to find on tasks &pi;<sub>0.5</sub> was finetuned on: 44% of the candidate pairs we tested there showed a significant swing, against 5% on the other tasks. This &pi;<sub>0.5</sub> was finetuned on one wording per task, with no rephrase augmentation. Our hypothesis is that finetuning makes the model latch onto the exact wordings it was trained on, so one changed word can break the match.</li>
 </ul>
 
 <h3>Citation</h3>
