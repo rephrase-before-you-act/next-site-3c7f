@@ -140,8 +140,16 @@
 </ul>
 <p>Each kind was distilled three times and the results averaged. Every applier and rulebook is tested on the four <a href="#groups">instruction groups</a> defined above: adversarial, VLM-written natural, human-written natural, and canonical.</p>
 <p><strong>What we found.</strong> Rulebooks built from out-of-finetune evidence are the best kind on every group except canonical. They improve the unmodified robot by 16 to 27% relative on the adversarial and natural groups, depending on the applier, and most of that gain comes on out-of-distribution tasks. The result is stable across the three appliers and three independent distillations. The same pipeline, repeated on &pi;<sub>0.5</sub> and LIBERO, lifts success on trained tasks from 93.6% to 97.8%.</p>
-<img src="assets/rules_dashboard.png" alt="main results">
-<p class="cap">One panel per instruction group and one bar group per applier. Dashed red line: the unmodified robot. Grey bar: the applier with no rules. Green bars: the out-of-finetune, both, and in-finetune rulebooks, each averaged over three draws. Thin bars to either side: in-distribution (left, 5 tasks) and out-of-distribution (right, 7). The canonical panel has one instruction per task, so it is noisy and should be read with caution.</p>
+<img src="assets/rules_dashboard_panel_adv.png" alt="main results: adversarial instructions">
+<img src="assets/rules_dashboard_panel_hum.png" alt="main results: human-written natural instructions">
+<img src="assets/rules_dashboard_panel_nat.png" alt="main results: VLM-written natural instructions">
+<img src="assets/rules_dashboard_panel_orig.png" alt="main results: canonical instructions">
+<p class="cap">Four charts, one per instruction group; within each, one bar group per applier. Dashed red line: the unmodified robot. Grey bar: the applier with no rules. Green bars: the out-of-finetune, both, and in-finetune rulebooks, each averaged over three draws. Thin bars to either side: in-distribution (left, 5 tasks) and out-of-distribution (right, 7). The canonical chart has one instruction per task, so it is noisy and should be read with caution.</p>
+
+<h3>The same method on &pi;<sub>0.5</sub> and LIBERO</h3>
+<p>To check that this is not a one-model result, we repeated the whole pipeline on &pi;<sub>0.5</sub> and LIBERO: a fresh sealed set of 20 tasks, 10 that the model was trained on and 10 it was not, with 10 natural rephrasings per task, evidence from single-edit pairs on other tasks only, Gemini as the applier, and three independently distilled rulebooks. On the trained tasks the rulebooks lift success from 93.6% to 97.8%, and all three land on the same two fixes: write &ldquo;stove&rdquo; instead of &ldquo;hot plate&rdquo; or &ldquo;burner&rdquo;, and &ldquo;plate&rdquo; instead of &ldquo;dish&rdquo;. On the other tasks nothing changes, which matches the oracle chart above: on tasks it was not trained on, &pi;<sub>0.5</sub> barely reacts to the wording.</p>
+<img src="assets/site_pi05_replication.png" alt="pi0.5 on LIBERO: no rephraser, no-rules applier, and rulebooks">
+<p class="cap">&pi;<sub>0.5</sub> on the 20 sealed LIBERO tasks, 200 natural rephrasings, 50 scenes each, Gemini as the applier. Dashed red: the unmodified robot. Grey: the applier with no rules. Green: the rulebooks, averaged over three draws. The gain on trained tasks is statistically significant; on the other tasks the rulebooks make no measurable difference, and the no-rules applier gains 1.6 points.</p>
 
 <h3>Conclusions</h3>
 <ul>
