@@ -105,16 +105,16 @@
 </div>
 
 <h2>Mitigating language sensitivity</h2>
-<p>A common and effective fix is <em>rephrase augmentation</em>: during training, each demonstration is labeled with several different wordings, so the model sees more variety. The &pi;<sub>0</sub> we study was trained this way, and it helps: on the human-written instructions in the chart below, it is worth about 2 points. But as the examples above show, large swings remain. We build on top of that fix with a method that changes nothing inside the robot&rsquo;s model; it is explained in the next section. The chart below compares the two in one setting, human-written instructions with Claude as the rewriter: what rephrase augmentation buys, and what our method adds on top.</p>
+<p>A common and effective fix is <em>rephrase augmentation</em>: during training, each demonstration is labeled with several different wordings, so the model sees more variety. The &pi;<sub>0</sub> we study was trained this way, and it helps: on the human-written instructions in the chart below, it is worth about 2 points. But as the examples above show, large swings remain. We build on top of that fix with a method that changes nothing inside the robot&rsquo;s model; it is explained in the next section. The chart below compares the two in one setting, human-written instructions with Claude as the applier, the model that rewrites each instruction: what rephrase augmentation buys, and what our method adds on top.</p>
 <img src="assets/pi0_human_ingredients.png" alt="what rephrase augmentation and our rules each add on human-written instructions">
-<p class="cap">Success on the 363 human-written instructions for the 12 held-out Bridge tasks, 24 scenes each. Left to right: &pi;<sub>0</sub> trained without rephrase augmentation; &pi;<sub>0</sub> trained with it; adding a vision-language model that rewrites each instruction with no rules; adding our distilled rules. Thin bars are the in-distribution (left) and out-of-distribution (right) tasks. The rules bar is the average over three rulebooks.</p>
+<p class="cap">Success on the 363 human-written instructions for the 12 held-out Bridge tasks, 24 scenes each. Left to right: &pi;<sub>0</sub> trained without rephrase augmentation; &pi;<sub>0</sub> trained with it; adding an applier, a vision-language model that rewrites each instruction, with no rules; adding our distilled rules. Thin bars are the in-distribution (left) and out-of-distribution (right) tasks. The rules bar is the average over three rulebooks.</p>
 
 <h3>Our method</h3>
 <p>Our key observation is that the sensitivity is systematic rather than random. The same kinds of wording help or hurt across many tasks, so the pattern can be written down as rules. The method has three steps:</p>
 <ol>
   <li><strong>Gather evidence.</strong> Take a handful of training tasks. A vision-language model writes many rephrasings of each, the robot tries every one, and we record how often each wording works.</li>
   <li><strong>Distill rules.</strong> A large language model reads all of that evidence and writes 10 to 20 plain-English rephrasing rules, for example &ldquo;&lsquo;coke&rsquo; stays &lsquo;coke&rsquo;, never &lsquo;cola&rsquo;, &lsquo;soda&rsquo;, or bare &lsquo;can&rsquo;&rdquo; and &ldquo;never swap a common noun for its sibling: keep &lsquo;plate&rsquo;, not &lsquo;dish&rsquo;&rdquo;. This happens once, ahead of time.</li>
-  <li><strong>Apply the rules.</strong> When a new instruction arrives, a vision-language model rewrites it once, following the rules, and the rewrite goes to the robot.</li>
+  <li><strong>Apply the rules.</strong> When a new instruction arrives, a vision-language model, the <em>applier</em>, rewrites it once following the rules, and the rewrite goes to the robot.</li>
 </ol>
 <p>The robot&rsquo;s model is never changed, nothing runs while the robot moves, and because the rules describe how the robot reads language in general, they carry over to tasks it has never seen.</p>
 <img src="assets/method.png" alt="method overview">
@@ -131,17 +131,17 @@
 <p class="cap">A live copy of one survey item; nothing typed here is sent anywhere. The <a href="survey/index.html">full survey</a>, with every task clip, is also available as a replica.</p>
 
 <h3>Results and experiments</h3>
-<p>We test on &pi;<sub>0</sub> with 12 held-out Bridge tasks that contributed no evidence, 24 scenes each. Three different models serve as the rewriter (the paper calls it the applier): Claude Fable 5, Gemini (the gemini-pro-latest model as of September 2026), and Qwen3.5-9B, an open-weights model that runs on a local GPU.</p>
+<p>We test on &pi;<sub>0</sub> with 12 held-out Bridge tasks that contributed no evidence, 24 scenes each. Three different models serve as the applier: Claude Fable 5, Gemini (the gemini-pro-latest model as of September 2026), and Qwen3.5-9B, an open-weights model that runs on a local GPU.</p>
 <p>The rules come in three kinds of rulebook, which differ only in the evidence the rule-writer saw:</p>
 <ul>
   <li><strong>In-finetune</strong>: rephrasings of tasks from the robot&rsquo;s own training data, scored without running the robot, by how closely its planned motion matched the human demonstration, together with the training instructions themselves.</li>
   <li><strong>Out-of-finetune</strong>: rephrasings of eight simulated tasks the robot was never trained on, scored by actually running the robot.</li>
   <li><strong>Both</strong>: all of the above.</li>
 </ul>
-<p>Each kind was distilled three times and the results averaged. Every rewriter and rulebook is tested on the four <a href="#groups">instruction groups</a> defined above: adversarial, VLM-written natural, human-written natural, and canonical.</p>
-<p><strong>What we found.</strong> Rulebooks built from out-of-finetune evidence are the best kind on every group except canonical. They improve the unmodified robot by 16 to 27% relative on the adversarial and natural groups, depending on the rewriter, and most of that gain comes on out-of-distribution tasks. The result is stable across the three rewriters and three independent distillations. The same pipeline, repeated on &pi;<sub>0.5</sub> and LIBERO, lifts success on trained tasks from 93.6% to 97.8%.</p>
+<p>Each kind was distilled three times and the results averaged. Every applier and rulebook is tested on the four <a href="#groups">instruction groups</a> defined above: adversarial, VLM-written natural, human-written natural, and canonical.</p>
+<p><strong>What we found.</strong> Rulebooks built from out-of-finetune evidence are the best kind on every group except canonical. They improve the unmodified robot by 16 to 27% relative on the adversarial and natural groups, depending on the applier, and most of that gain comes on out-of-distribution tasks. The result is stable across the three appliers and three independent distillations. The same pipeline, repeated on &pi;<sub>0.5</sub> and LIBERO, lifts success on trained tasks from 93.6% to 97.8%.</p>
 <img src="assets/rules_dashboard.png" alt="main results">
-<p class="cap">One panel per instruction group and one bar group per rewriter. Dashed red line: the unmodified robot. Grey bar: the rewriter with no rules. Green bars: the out-of-finetune, both, and in-finetune rulebooks, each averaged over three draws. Thin bars to either side: in-distribution (left, 5 tasks) and out-of-distribution (right, 7). The canonical panel has one instruction per task, so it is noisy and should be read with caution.</p>
+<p class="cap">One panel per instruction group and one bar group per applier. Dashed red line: the unmodified robot. Grey bar: the applier with no rules. Green bars: the out-of-finetune, both, and in-finetune rulebooks, each averaged over three draws. Thin bars to either side: in-distribution (left, 5 tasks) and out-of-distribution (right, 7). The canonical panel has one instruction per task, so it is noisy and should be read with caution.</p>
 
 <h3>Conclusions</h3>
 <ul>
